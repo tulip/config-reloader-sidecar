@@ -1,14 +1,6 @@
 name: Setup ECR / Buildx
 description: Composite action to setup requirements for ECR and buildx for docker pushes
 
-inputs:
-  registry-type:
-    description: ECR Registry Type
-    default: private
-  iam-role-to-assume:
-    description: IAM Role to Assume
-    required: true
-
 outputs:
   ecr_registry:
     description: ECR Registry
@@ -17,8 +9,8 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v4
+    - name: configure aws credentials
+      uses: aws-actions/configure-aws-credentials@e3dd6a429d7300a6a4c196c26e071d42e0343502 # v4
       with:
         role-to-assume: ${{ inputs.iam-role-to-assume }}
         role-session-name: github-action-session
@@ -26,9 +18,12 @@ runs:
 
     - name: Login to Amazon ECR
       id: login-ecr
-      uses: aws-actions/amazon-ecr-login@v1
+      uses: aws-actions/amazon-ecr-login@062b18b96a7aff071d4dc91bc00c4c1a7945b076 # v2
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@4574d27a4764455b42196d70a065bc6853246a25 # 3.4.0
       with:
-        registry-type: ${{ inputs.registry-type }}
+        image: tonistiigi/binfmt:qemu-v9.2.0
 
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@ecf95283f03858871ff00b787d79c419715afc34 # v2.7.0
+      uses: docker/setup-buildx-action@b5ca514318bd6ebac0fb2aedd5d36ec1b5c232a2 # v3
