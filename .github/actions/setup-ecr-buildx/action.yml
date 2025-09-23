@@ -1,6 +1,11 @@
 name: Setup ECR / Buildx
 description: Composite action to setup requirements for ECR and buildx for docker pushes
 
+inputs:
+  iam-role-to-assume:
+    description: IAM Role to assume
+    required: true
+
 outputs:
   ecr_registry:
     description: ECR Registry
