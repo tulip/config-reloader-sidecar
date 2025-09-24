@@ -1,11 +1,9 @@
 name: Build and Push
 
-# Builds and pushes the branch to ECR from master, or the manually selected branch when invoked manually. We stopped using Docker Hub for storing the image of oplogtoredis, where we used a Webhook to do the same thing.
-
 on:
   push:
     branches:
-      - master
+      - main
   # Left this here in-case the workflow needs to be developed further rapidly:
   pull_request:
     types: [ opened, synchronize, reopened ]
